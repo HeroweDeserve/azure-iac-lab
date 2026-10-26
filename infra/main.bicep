@@ -21,6 +21,12 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
           addressPrefix: '10.10.1.0/24'
         }
       }
+      {
+        name: 'subnet-data'
+        properties: {
+          addressPrefix: '10.10.2.0/24'
+        }
+      }
     ]
   }
 }
