@@ -11,6 +11,10 @@ on:
 
   workflow_dispatch:
 
+concurrency:
+  group: azure-deployment-development
+  cancel-in-progress: false
+
 permissions:
   id-token: write
   contents: read
