@@ -1,3 +1,4 @@
+// CI/CD validation workflow test
 
 @description('Azure region for deployment')
 param location string = resourceGroup().location
