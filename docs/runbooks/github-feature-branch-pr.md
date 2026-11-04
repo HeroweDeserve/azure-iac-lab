@@ -33,7 +33,7 @@ Make changes through a feature branch and pull request while protecting `main`.
 4. Commit with a descriptive message.
 5. Verify the commit appears on the feature branch.
 
-**Status:** To be verified during the current lab.
+**Verified (November 4, 2026):** The feature branch contains the committed `.github/workflows/deploy.yml` changes. The workflow was read back from GitHub and confirmed to have separate `validate` and `deploy` jobs. Execution is not yet tested.
 
 ### 3. Create a pull request
 1. Open **Pull requests** > **New pull request**.
