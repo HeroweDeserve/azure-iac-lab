@@ -41,7 +41,7 @@ Make changes through a feature branch and pull request while protecting `main`.
 3. Review the diff and enter a descriptive title and summary.
 4. Submit the pull request.
 
-**Status:** To be verified during the current lab.
+**Verified (November 4, 2026):** PR #4 was created against `main` from `feature/separate-validation-deployment`. The required `Validate Azure Infrastructure / validate` check passed. Initial What-If incorrectly predicted creating the existing `nsg-iac-app`; inspection showed the custom IaC Validation Operator role lacked `Microsoft.Network/networkSecurityGroups/read`. After that permission was added, a rerun passed and showed the NSG as `NoChange`. The existing VNet still shows a `privateEndpointVNetPolicies` property difference; merge/deployment remain pending review.
 
 ### 4. Validate and merge
 1. Wait for required GitHub Actions checks to complete.
