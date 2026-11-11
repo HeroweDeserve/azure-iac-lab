@@ -2,6 +2,9 @@ name: Azure Infrastructure Drift Detection
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '15 9 * * 1'
+      timezone: 'America/Chicago'
 
 permissions:
   contents: read
@@ -13,19 +16,17 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        
+        uses: actions/checkout@v6
+
       - name: Login to Azure
         uses: azure/login@v3
         with:
           client-id: ${{ vars.AZURE_VALIDATION_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          
+
       - name: Check infrastructure drift
         run: |
           az deployment group what-if \
             --resource-group RG-IaC-Lab \
             --template-file infra/main.bicep
-
-
