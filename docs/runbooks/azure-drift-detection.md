@@ -222,3 +222,16 @@ On November 11, 2026, the user verified the weekly schedule and `actions/checkou
 ## Next phase — Structured reporting and annotations
 
 Work will proceed in branch `feature/drift-reporting-annotations`. Planned changes are not yet implemented or tested. The goal is to retain What-If results and display useful GitHub Actions annotations while distinguishing execution failures, potential differences, and known provider-related noise. No automatic remediation will be introduced.
+
+## Part F — Structured reporting verification (November 11, 2026)
+
+After merging PR #8, manually triggered **Azure Infrastructure Drift Detection #3** on `main`:
+
+- [Workflow run](https://github.com/HeroweDeserve/azure-iac-lab/actions/runs/43087297261)
+- **Result:** Success, 39 seconds
+- **What-If step:** Success
+- **Job summary:** Generated and displayed structured What-If JSON
+- **Artifact:** One downloadable `azure-what-if-report` archive, containing `what-if.txt`; contents verified by the user
+- **Observed resources:** `nsg-iac-app` — `NoChange`; `vnet-iac-lab` — `Modify` with a `Delete` delta for `properties.privateEndpointVNetPolicies` (before: `Disabled`, after: `null`)
+
+The existing VNet property difference remains unexplained. It must not be automatically labeled confirmed drift. The reporting enhancements are verified; **annotations have not yet been implemented**.
