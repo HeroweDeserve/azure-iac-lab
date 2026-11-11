@@ -234,4 +234,13 @@ After merging PR #8, manually triggered **Azure Infrastructure Drift Detection #
 - **Artifact:** One downloadable `azure-what-if-report` archive, containing `what-if.txt`; contents verified by the user
 - **Observed resources:** `nsg-iac-app` — `NoChange`; `vnet-iac-lab` — `Modify` with a `Delete` delta for `properties.privateEndpointVNetPolicies` (before: `Disabled`, after: `null`)
 
-The existing VNet property difference remains unexplained. It must not be automatically labeled confirmed drift. The reporting enhancements are verified; **annotations have not yet been implemented**.
+The existing VNet property difference remains unexplained. It must not be automatically labeled confirmed drift. The reporting enhancements are verified. Annotation behavior was subsequently implemented and verified in Part G.
+
+## Part G — GitHub Actions annotation verification (November 11, 2026)
+
+- **Change:** PR #9 added an `Annotate potential infrastructure changes` step that parses structured What-If JSON and emits GitHub Actions notices/warnings. The step runs only after a successful What-If check.
+- **Required PR validation:** Passed; PR #9 merged to `main`.
+- **Manual verification:** [Azure Infrastructure Drift Detection #4](https://github.com/HeroweDeserve/azure-iac-lab/actions/runs/43088656780) on `main`, triggered manually, **Success** (42 seconds).
+- **Observed annotations:** 3 warnings and 1 notice. The custom warnings were **Azure What-If** (`1 resource(s) with potential changes; review the saved What-If report`) and **Potential infrastructure difference** (resource path shown in the annotation). The third warning concerned Node.js 20 deprecation in a GitHub Actions dependency; the notice concerned GitHub's Ubuntu 26 runner migration. These runtime notices are separate from Azure configuration differences.
+- **Interpretation:** The workflow completed successfully even with a reported potential resource change, as designed. The existing `vnet-iac-lab` / `privateEndpointVNetPolicies` difference is still **not confirmed drift**. The screenshot verified the annotation titles and counts; the full resource-path annotation was truncated in the screenshot.
+- **Outstanding:** Observe the first actual Monday scheduled run; investigate the persistent provider-property difference and the Node.js deprecation warning independently. No automatic remediation is enabled.
