@@ -254,3 +254,13 @@ The existing VNet property difference remains unexplained. It must not be automa
 **Automated verification:** [Azure Infrastructure Drift Detection #5](https://github.com/HeroweDeserve/azure-iac-lab/actions/runs/43092598245) ran manually on `main` on November 11, 2026 and **succeeded** (38 seconds). The What-If JSON listed both `nsg-iac-app` and `vnet-iac-lab` as `NoChange`. The annotations showed **Azure What-If: No resource changes reported**, with no custom potential-difference warning. One unrelated Node.js 20 deprecation warning and one Ubuntu 26 migration notice remained.
 
 **Conclusion:** Explicitly specifying the deployed VNet policy value resolved this recurring What-If comparison difference without modifying Azure resources. This establishes a template-comparison cause for this instance; it does not prove that every omitted/default property difference is harmless. The first actual scheduled Monday run is still pending verification.
+
+## Part I — Node.js 20 deprecation warning resolved (November 11, 2026)
+
+**Cause:** The expanded warning in [Azure Infrastructure Drift Detection #5](https://github.com/HeroweDeserve/azure-iac-lab/actions/runs/43092598245) explicitly identified `actions/upload-artifact@v4` as targeting deprecated Node.js 20 and being forced to run on Node.js 24. Other workflow actions were not identified by that warning.
+
+**Controlled workflow fix:** In branch `feature/upgrade-upload-artifact-node24`, changed only the artifact upload step from `actions/upload-artifact@v4` to `actions/upload-artifact@v6` in `.github/workflows/drift-detection.yml`. Artifact name `azure-what-if-report`, path `reports/what-if.txt`, and 14-day retention were preserved. Required PR validation passed; [PR #13](https://github.com/HeroweDeserve/azure-iac-lab/pull/13) was merged to `main`. No Azure deployment was performed.
+
+**Automated verification:** Manually triggered [Azure Infrastructure Drift Detection #6](https://github.com/HeroweDeserve/azure-iac-lab/actions/runs/43094559686) on `main` on November 11, 2026. **Result: Success (56 seconds)**; **0 warnings, 2 notices, 1 artifact**. Structured What-If output showed `nsg-iac-app` and `vnet-iac-lab` both `NoChange`. The Node.js 20 deprecation warning no longer appeared. The notices were the expected `Azure What-If: No resource changes reported` and GitHub's Ubuntu 26 runner migration announcement.
+
+**Conclusion:** Upgrading the artifact upload action to v6 eliminated the observed Node.js 20 warning while retaining successful report generation and artifact upload. The Ubuntu runner migration notice is informational. The first actual scheduled Monday run remains unverified.
