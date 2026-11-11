@@ -201,15 +201,16 @@ The initial run succeeded but GitHub warned that `actions/checkout@v4` targets d
 **Feature branch:** `feature/drift-detection-enhancements`  
 **Workflow commit:** `30194ec`
 
-Added a `schedule` trigger while retaining `workflow_dispatch`:
+Added a `schedule` trigger while retaining `workflow_dispatch` (subsequently adjusted to the requested 9:15 AM Central):
 
 ```yaml
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 14 * * 1'
+    - cron: '15 9 * * 1'
+      timezone: 'America/Chicago'
 ```
 
-The cron expression runs on Mondays at **14:17 UTC** (8:17 AM CST / 9:17 AM CDT). GitHub schedules may be delayed. The checkout action was changed from `actions/checkout@v4` to `actions/checkout@v6`.
+The cron expression runs every Monday at **9:15 AM America/Chicago**, automatically accounting for CST/CDT. GitHub schedules may be delayed. The checkout action was changed from `actions/checkout@v4` to `actions/checkout@v6`.
 
 **Status:** Changes committed to feature branch, **not yet merged**. GitHub's scheduled workflow will use the default branch (`main`) only after merging. A manual workflow run and subsequent scheduled execution still need verification; no scheduled run has yet been observed.
