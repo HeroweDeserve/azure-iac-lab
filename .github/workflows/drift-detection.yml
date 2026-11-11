@@ -88,7 +88,7 @@ jobs:
 
       - name: Upload What-If report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: azure-what-if-report
           path: reports/what-if.txt
