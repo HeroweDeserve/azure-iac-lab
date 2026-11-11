@@ -18,6 +18,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: vnetName
   location: location
   properties: {
+    privateEndpointVNetPolicies: 'Disabled'
     addressSpace: {
       addressPrefixes: [
         '10.10.0.0/16'
