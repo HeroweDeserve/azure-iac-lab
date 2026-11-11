@@ -38,6 +38,32 @@ jobs:
             > reports/what-if.txt
           cat reports/what-if.txt
 
+      - name: Annotate potential infrastructure changes
+        if: steps.driftcheck.outcome == 'success'
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("reports/what-if.txt").read_text())
+          changes = report.get("changes")
+          if not isinstance(changes, list):
+              raise ValueError("What-If report does not contain a changes array")
+
+          actionable = [item for item in changes if item.get("changeType") not in ("NoChange", "Ignore")]
+          if not actionable:
+              print("::notice title=Azure What-If::No resource changes reported")
+          else:
+              print(f"::warning title=Azure What-If::{len(actionable)} resource(s) with potential changes; review the saved What-If report")
+              for item in actionable:
+                  resource = (item.get("resourceId") or item.get("after", {}).get("name") or "Unknown resource")
+                  change_type = item.get("changeType", "Unknown")
+                  detail = f"{resource}: {change_type} (potential difference, not confirmed drift)"
+                  detail = detail.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+                  print(f"::warning title=Potential infrastructure difference::{detail}")
+          PY
+
       - name: Write drift detection summary
         if: always()
         shell: bash
