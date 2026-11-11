@@ -3,7 +3,8 @@ name: Azure Infrastructure Drift Detection
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 14 * * 1'
+    - cron: '15 9 * * 1'
+      timezone: 'America/Chicago'
 
 permissions:
   contents: read
