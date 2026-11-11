@@ -214,3 +214,11 @@ on:
 The cron expression runs every Monday at **9:15 AM America/Chicago**, automatically accounting for CST/CDT. GitHub schedules may be delayed. The checkout action was changed from `actions/checkout@v4` to `actions/checkout@v6`.
 
 **Status:** Changes committed to feature branch, **not yet merged**. GitHub's scheduled workflow will use the default branch (`main`) only after merging. A manual workflow run and subsequent scheduled execution still need verification; no scheduled run has yet been observed.
+
+## Part E — Verification after merge
+
+On November 11, 2026, the user verified the weekly schedule and `actions/checkout@v6` on `main`, and manually ran the updated workflow successfully. The scheduled trigger itself remains unverified until a Monday scheduled run occurs. The successful manual execution confirms the updated workflow runs, not that What-If reported zero differences.
+
+## Next phase — Structured reporting and annotations
+
+Work will proceed in branch `feature/drift-reporting-annotations`. Planned changes are not yet implemented or tested. The goal is to retain What-If results and display useful GitHub Actions annotations while distinguishing execution failures, potential differences, and known provider-related noise. No automatic remediation will be introduced.

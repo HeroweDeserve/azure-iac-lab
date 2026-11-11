@@ -26,7 +26,45 @@ jobs:
           subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
       - name: Check infrastructure drift
+        id: driftcheck
+        shell: bash
         run: |
+          set -euo pipefail
+          mkdir -p reports
           az deployment group what-if \
             --resource-group RG-IaC-Lab \
-            --template-file infra/main.bicep
+            --template-file infra/main.bicep \
+            --no-pretty-print \
+            > reports/what-if.txt
+          cat reports/what-if.txt
+
+      - name: Write drift detection summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Azure Infrastructure Drift Detection"
+            echo ""
+            echo "- **Resource group:** RG-IaC-Lab"
+            echo "- **Source template:** \`infra/main.bicep\`"
+            echo "- **What-If step:** ${{ steps.driftcheck.outcome }}"
+            echo ""
+            if [ -s reports/what-if.txt ]; then
+              echo "### What-If output"
+              echo ""
+              echo '~~~text'
+              cat reports/what-if.txt
+              echo '~~~'
+            else
+              echo "No What-If report was produced. Review the workflow logs."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload What-If report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: azure-what-if-report
+          path: reports/what-if.txt
+          if-no-files-found: warn
+          retention-days: 14
