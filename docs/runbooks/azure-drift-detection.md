@@ -180,8 +180,8 @@ The initial run succeeded but GitHub warned that `actions/checkout@v4` targets d
 
 ## Next enhancements — not yet implemented
 
-- [ ] Update `actions/checkout` to a supported version
-- [ ] Add scheduled execution against `main`
+- [x] Update `actions/checkout` to v6 in feature branch (pending PR validation and merge)
+- [x] Add weekly schedule in feature branch (pending PR validation and merge)
 - [ ] Capture What-If output as a retained report
 - [ ] Distinguish known provider-related noise from newly introduced differences
 - [ ] Add actionable reporting/alerts without automatically deploying
@@ -195,3 +195,21 @@ The initial run succeeded but GitHub warned that `actions/checkout@v4` targets d
 4. GitHub Actions can run read-only checks using an existing OIDC validation identity.
 5. A green workflow run proves execution succeeded, not that no differences exist.
 6. Feature branches, pull requests, and required checks protect automation changes.
+
+## Part D — Weekly scheduling enhancement (pending verification)
+
+**Feature branch:** `feature/drift-detection-enhancements`  
+**Workflow commit:** `30194ec`
+
+Added a `schedule` trigger while retaining `workflow_dispatch`:
+
+```yaml
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 14 * * 1'
+```
+
+The cron expression runs on Mondays at **14:17 UTC** (8:17 AM CST / 9:17 AM CDT). GitHub schedules may be delayed. The checkout action was changed from `actions/checkout@v4` to `actions/checkout@v6`.
+
+**Status:** Changes committed to feature branch, **not yet merged**. GitHub's scheduled workflow will use the default branch (`main`) only after merging. A manual workflow run and subsequent scheduled execution still need verification; no scheduled run has yet been observed.
