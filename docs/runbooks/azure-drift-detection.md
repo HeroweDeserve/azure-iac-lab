@@ -4,7 +4,7 @@
 **Resource group:** RG-IaC-Lab  
 **Bicep source:** `infra/main.bicep`  
 **Workflow:** `.github/workflows/drift-detection.yml`  
-**Last verified:** November 11, 2026
+**Last verified:** November 11, 2026.
 
 ## Purpose and scope
 
